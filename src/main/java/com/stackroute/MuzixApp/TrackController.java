@@ -1,14 +1,11 @@
 package com.stackroute.MuzixApp;
 
 import com.stackroute.MuzixApp.domain.Track;
+import com.stackroute.MuzixApp.exceptions.TrackNotFoundException;
 import com.stackroute.MuzixApp.service.TrackService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,5 +42,40 @@ public class TrackController {
         return new ResponseEntity<List<Track>>(trackService.getAllTracks(),HttpStatus.OK);
     }
 
+    @PutMapping("track/{id}")
+    public ResponseEntity<?> updateTrack(@RequestBody Track track, @PathVariable int id)
+    {
+        ResponseEntity responseEntity;
 
+        try
+        {
+            Track track1 = trackService.updateTrack(track,id);
+            responseEntity = new ResponseEntity<String>("Updated Successfully", HttpStatus.OK);
+        }
+        catch (TrackNotFoundException exception)
+        {
+            responseEntity = new ResponseEntity<String>(exception.getMessage(), HttpStatus.CONFLICT);
+        }
+
+        return responseEntity;
+    }
+
+    @DeleteMapping("track/{id}")
+    public ResponseEntity<?> deleteTrack(@PathVariable int id)
+    {
+        ResponseEntity responseEntity = null;
+
+        try
+        {
+            if(trackService.deleteTrack(id)) {
+                responseEntity = new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);
+            }
+        }
+        catch (TrackNotFoundException exception)
+        {
+            responseEntity = new ResponseEntity<String>(exception.getMessage(), HttpStatus.CONFLICT);
+        }
+
+        return responseEntity;
+    }
 }
