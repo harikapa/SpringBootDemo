@@ -5,7 +5,6 @@ import com.stackroute.MuzixApp.exceptions.TrackAlreadyExistsException;
 import com.stackroute.MuzixApp.exceptions.TrackNotFoundException;
 import com.stackroute.MuzixApp.repository.TrackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
