@@ -4,6 +4,7 @@ import com.stackroute.MuzixApp.domain.Track;
 import com.stackroute.MuzixApp.exceptions.TrackAlreadyExistsException;
 import com.stackroute.MuzixApp.repository.TrackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,4 +41,13 @@ public class TrackServiceImpl implements TrackService{
 
         return trackRepository.findAll();
     }
+
+    @Override
+    public List<Track> getTracksByName(String name) {
+
+        return trackRepository.getTrackByName(name);
+
+    }
+
+
 }

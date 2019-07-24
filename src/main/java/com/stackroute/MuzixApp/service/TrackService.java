@@ -10,4 +10,6 @@ public interface TrackService {
     public Track saveTrack(Track track) throws TrackAlreadyExistsException;
 
     public List<Track> getAllTracks();
+
+    public List<Track> getTracksByName(String name);
 }

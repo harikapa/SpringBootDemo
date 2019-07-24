@@ -2,13 +2,11 @@ package com.stackroute.MuzixApp;
 
 import com.stackroute.MuzixApp.domain.Track;
 import com.stackroute.MuzixApp.service.TrackService;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,11 +37,37 @@ public class TrackController {
         return responseEntity;
     }
 
-    @GetMapping("track")
-    public ResponseEntity<?> getAllTracks()
+    @GetMapping("trackByName")
+    public ResponseEntity<?> getTrackByName(@RequestParam String name)
     {
-        return new ResponseEntity<List<Track>>(trackService.getAllTracks(),HttpStatus.OK);
+        ResponseEntity responseEntity;
+
+        try {
+            responseEntity = new ResponseEntity<List<Track>>(trackService.getTracksByName(name), HttpStatus.OK);
+        }
+        catch (Exception exception)
+        {
+            responseEntity = new ResponseEntity<String>(exception.getMessage(), HttpStatus.CONFLICT);
+        }
+
+        return responseEntity;
     }
 
 
+    @GetMapping("track")
+    public ResponseEntity<?> getAllTracks()
+    {
+        ResponseEntity responseEntity;
+
+        try {
+            responseEntity = new ResponseEntity<List<Track>>(trackService.getAllTracks(),HttpStatus.OK);
+        }
+        catch (Exception exception)
+        {
+            responseEntity = new ResponseEntity<String>(exception.getMessage(), HttpStatus.CONFLICT);
+        }
+
+        return responseEntity;
+
+    }
 }
