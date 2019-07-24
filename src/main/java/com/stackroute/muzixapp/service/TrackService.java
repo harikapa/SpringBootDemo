@@ -1,8 +1,8 @@
-package com.stackroute.MuzixApp.service;
+package com.stackroute.muzixapp.service;
 
-import com.stackroute.MuzixApp.domain.Track;
-import com.stackroute.MuzixApp.exceptions.TrackAlreadyExistsException;
-import com.stackroute.MuzixApp.exceptions.TrackNotFoundException;
+import com.stackroute.muzixapp.domain.Track;
+import com.stackroute.muzixapp.exceptions.TrackAlreadyExistsException;
+import com.stackroute.muzixapp.exceptions.TrackNotFoundException;
 
 import java.util.List;
 

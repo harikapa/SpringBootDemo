@@ -1,4 +1,4 @@
-package com.stackroute.MuzixApp.configuration;
+package com.stackroute.muzixapp.configuration;
 
 import org.h2.server.web.WebServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;

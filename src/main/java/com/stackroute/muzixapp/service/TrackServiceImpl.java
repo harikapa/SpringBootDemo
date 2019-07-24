@@ -1,17 +1,20 @@
-package com.stackroute.MuzixApp.service;
+package com.stackroute.muzixapp.service;
 
-import com.stackroute.MuzixApp.domain.Track;
-import com.stackroute.MuzixApp.exceptions.TrackAlreadyExistsException;
-import com.stackroute.MuzixApp.exceptions.TrackNotFoundException;
-import com.stackroute.MuzixApp.repository.TrackRepository;
+import com.stackroute.muzixapp.domain.Track;
+import com.stackroute.muzixapp.exceptions.TrackAlreadyExistsException;
+import com.stackroute.muzixapp.exceptions.TrackNotFoundException;
+import com.stackroute.muzixapp.repository.TrackRepository;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
-public class TrackServiceImpl implements TrackService{
+public class TrackServiceImpl implements TrackService, InitializingBean {
 
     TrackRepository trackRepository;
 
@@ -19,6 +22,19 @@ public class TrackServiceImpl implements TrackService{
     public TrackServiceImpl(TrackRepository trackRepository)
     {
         this.trackRepository = trackRepository;
+    }
+
+    private static final Logger LOG
+            = Logger.getLogger("Track service Impl entered");
+
+    @PostConstruct
+    public void init() {
+        LOG.info(trackRepository.toString());
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        LOG.info(trackRepository.toString());
     }
 
     @Override

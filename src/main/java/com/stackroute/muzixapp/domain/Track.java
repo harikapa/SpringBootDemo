@@ -1,4 +1,4 @@
-package com.stackroute.MuzixApp.domain;
+package com.stackroute.muzixapp.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
