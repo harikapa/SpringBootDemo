@@ -1,11 +1,11 @@
 package com.stackroute.MuzixApp;
 
 import com.stackroute.MuzixApp.domain.Track;
+import com.stackroute.MuzixApp.exceptions.TrackNotFoundException;
 import com.stackroute.MuzixApp.service.TrackService;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,19 +55,53 @@ public class TrackController {
 
 
     @GetMapping("track")
-    public ResponseEntity<?> getAllTracks()
-    {
+    public ResponseEntity<?> getAllTracks() {
         ResponseEntity responseEntity;
 
         try {
-            responseEntity = new ResponseEntity<List<Track>>(trackService.getAllTracks(),HttpStatus.OK);
-        }
-        catch (Exception exception)
-        {
+            responseEntity = new ResponseEntity<List<Track>>(trackService.getAllTracks(), HttpStatus.OK);
+        } catch (Exception exception) {
             responseEntity = new ResponseEntity<String>(exception.getMessage(), HttpStatus.CONFLICT);
         }
 
         return responseEntity;
 
+    }
+
+    @PutMapping("track/{id}")
+    public ResponseEntity<?> updateTrack(@RequestBody Track track, @PathVariable int id)
+    {
+        ResponseEntity responseEntity;
+
+        try
+        {
+            Track track1 = trackService.updateTrack(track,id);
+            responseEntity = new ResponseEntity<String>("Updated Successfully", HttpStatus.OK);
+        }
+        catch (TrackNotFoundException exception)
+        {
+            responseEntity = new ResponseEntity<String>(exception.getMessage(), HttpStatus.CONFLICT);
+        }
+
+        return responseEntity;
+    }
+
+    @DeleteMapping("track/{id}")
+    public ResponseEntity<?> deleteTrack(@PathVariable int id)
+    {
+        ResponseEntity responseEntity = null;
+
+        try
+        {
+            if(trackService.deleteTrack(id)) {
+                responseEntity = new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);
+            }
+        }
+        catch (TrackNotFoundException exception)
+        {
+            responseEntity = new ResponseEntity<String>(exception.getMessage(), HttpStatus.CONFLICT);
+        }
+
+        return responseEntity;
     }
 }
