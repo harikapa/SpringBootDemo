@@ -4,14 +4,19 @@ import com.stackroute.muzixapp.domain.Track;
 import com.stackroute.muzixapp.exceptions.TrackAlreadyExistsException;
 import com.stackroute.muzixapp.exceptions.TrackNotFoundException;
 import com.stackroute.muzixapp.service.TrackService;
+import org.hibernate.validator.internal.util.privilegedactions.GetMethod;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @RestController
 @ControllerAdvice(basePackages = "com.stackroute.muzixapp")
+@PropertySource("classpath:application.properties")
 public class TrackController {
 
     TrackService trackService;
@@ -67,5 +72,15 @@ public class TrackController {
         }
 
         return responseEntity;
+    }
+
+    @GetMapping("getLastFmTracks")
+    public ResponseEntity<?> getLastFmTracks(@RequestParam String url) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        String string = restTemplate.getForObject(url,String.class);
+        System.out.println(string);
+        Track track = restTemplate.getForObject(url,Track.class);
+        return new ResponseEntity<>(track,HttpStatus.OK);
     }
 }

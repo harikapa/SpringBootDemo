@@ -6,35 +6,44 @@ import com.stackroute.muzixapp.exceptions.TrackNotFoundException;
 import com.stackroute.muzixapp.repository.TrackRepository;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Service
-public class TrackServiceImpl implements TrackService, InitializingBean {
+@PropertySource("application.properties")
+public class TrackServiceImpl implements TrackService, ApplicationListener<ContextRefreshedEvent>, CommandLineRunner {
 
     TrackRepository trackRepository;
+
+    @Value("${track1.id}")
+    private int id1;
+
+    @Value("${track1.name}")
+    private String name1;
+
+    @Value("${track1.comment}")
+    private String comment1;
+
+    @Value("${track2.id}")
+    private int id2;
+
+    @Value("${track2.name}")
+    private String name2;
+
+    @Value("${track2.comment}")
+    private String comment2;
 
     @Autowired
     public TrackServiceImpl(TrackRepository trackRepository)
     {
         this.trackRepository = trackRepository;
-    }
-
-    private static final Logger LOG
-            = Logger.getLogger("Track service Impl entered");
-
-    @PostConstruct
-    public void init() {
-        LOG.info(trackRepository.toString());
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        LOG.info(trackRepository.toString());
     }
 
     @Override
@@ -102,5 +111,16 @@ public class TrackServiceImpl implements TrackService, InitializingBean {
         {
             return false;
         }
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+
+    }
+
+    @Override
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        trackRepository.save(new Track(id1,name1,comment1));
+        trackRepository.save(new Track(id2,name2,comment2));
     }
 }
